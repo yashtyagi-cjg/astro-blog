@@ -1,0 +1,46 @@
+---
+import BaseLayout from './../../layouts/Layout.astro';
+import CardAllPost from "../../components/CardAllPost.astro";
+
+
+export async function getStaticPaths() {
+  const allPosts: any = await Astro.glob('./../post/*.md'); // Assuming your directory is named "posts"
+  
+  if (!allPosts || allPosts.length === 0) {
+    console.warn("No posts found in collection 'posts'");
+    return { paths: [], fallback: false };
+  }
+  
+//   console.log(allPosts[0])
+  const uniqueTags: any = [...new Set(allPosts.map((post:any) => post.frontmatter.tags).flat())];
+//   console.log("Tags", uniqueTags);
+//   console.log("Posts", allPosts);
+
+    return uniqueTags.map((tag: string)=>{
+        const filteredPosts = allPosts.filter((post:any)=>post.frontmatter.tags.includes(tag));
+
+        return {
+            params: {tag},
+            props: {posts: filteredPosts}
+        }
+    })
+}
+
+
+const { posts } = Astro.props;
+const { tag } = Astro.params;
+console.log(tag)
+const isPost = posts? true: false;
+---
+
+<BaseLayout title={`Posts tagged with ${tag}`}>
+    <div class="divider text-xl sm:text-2xl my-[3%] w-[80%] underline decoration-wavy decoration-sky-500 mx-auto">{`Posts tagged with: ${tag}`} </div>
+    {isPost?(
+  <div class="cardsContainer">
+    {/* @ts-ignore */}
+    {posts.map((post: any) => (
+      <CardAllPost url={post.url} frontmatter={post.frontmatter} />
+    ))}
+  </div>):
+   ( <p> No posts to display </p>)}
+</BaseLayout>

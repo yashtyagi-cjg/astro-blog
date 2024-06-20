@@ -1,8 +1,22 @@
 ---
 import Layout from './../layouts/Layout.astro'
 import Card from '../components/Card.astro'
-const title = 'Yash Hacks Stuff'
+const title: string = 'Yash Hacks Stuff'
+const termMessage: String[] = [
+	"ps -9 $STRESS", 
+	"npm install posts", 
+	"npm run dev -- ---withfun", "Hi there! I'm Yash.", 
+	"Welcome to my blog where I hack stuff and share the fun!", 
+	"Enjoy exploring. I sure had a blast creating it!"
+]
 
+
+const posts = await Astro.glob('./post/*.md');
+
+// Sort posts by pubDate in descending order and get the last 5
+const recentPosts = posts
+  .sort((a, b) => new Date(b.frontmatter.pubDate).getTime() - new Date(a.frontmatter.pubDate).getTime())
+  .slice(0, 5);
 ---
 
 
@@ -10,7 +24,7 @@ const title = 'Yash Hacks Stuff'
 	<!-- <div class="mockup-window border bg-base-300 w-[40%] mx-auto mt-[5%]">
 		<div class="flex justify-center px-4 py-12 bg-base-200">Welcome to Yash Hacks Stuff! Grab a cup of coffee, sit back, and enjoy as I break, fix, and tinker with all things tech. Let's have some fun with code!</div>
 	  </div> -->
-	  <div class="mockup-code w-[40%] mx-auto mt-[5%] mb-[5%] ">
+	  <div class="mockup-code mx-auto my-[5%] w-[50%]">
 		<pre data-prefix="$" class="text-danger antialiased "><code>ps -9 $STRESS</code></pre>
 		<pre data-prefix=">" class="text-warning antialiased "><code>npm install posts</code></pre>
 		<pre data-prefix=">" class="text-success antialiased "><code>npm run dev -- ---withfun</code></pre>
@@ -22,8 +36,10 @@ const title = 'Yash Hacks Stuff'
 
 	<div class="flex flex-col w-[80%] mx-auto">
 		<div class="divider mb-[3%] w-[70%] mx-auto"><h1 class="font-sans text-xl font-semibold ">Recent Posts</h1></div>
-		<Card/>
-		<a href='' class="self-end me-[20%] mb-[3%]">
+		{recentPosts.map((post)=>(
+			<Card url={post.url} frontmatter={post.frontmatter}/>
+		))}
+		<a href='/post/all' class="self-end sm:me-[20%]  sm:mb-[3%]">
 			Read More<svg class="inline"  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-caret-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 18l6 -6l-6 -6v12" /></svg>
 		</a>
 	</div>

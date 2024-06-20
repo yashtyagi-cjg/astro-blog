@@ -1,0 +1,26 @@
+---
+import Card from '../../components/CardAllPost.astro'
+import BaseLayout from './../../layouts/Layout.astro'
+const allPosts = await Astro.glob('./*.md')
+console.log(JSON.stringify(allPosts[0]))
+const title: string = "All Posts"
+---
+
+
+<BaseLayout title={title}>
+<div >
+    <div class="flex flex-col w-[80%] mx-auto my-[3%]">
+
+        <!-- <h1 class="text-2xl w-auto mx-auto"> </h1> -->
+        <div class="divider text-2xl">All Posts </div>
+
+      </div>
+    
+    <div class="cardsContainer">
+        {allPosts.map((post)=>( 
+            <Card frontmatter={post.frontmatter} url={post.url}/>
+        ))}
+    </div>
+</div>
+</BaseLayout>
+

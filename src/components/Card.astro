@@ -1,20 +1,18 @@
 ---
-
+const {frontmatter, url} = Astro.props;
 ---
 
-<div class="card w-[60%] shadow mx-auto mb-[3%] rounded-md">
+<div class="card sm:w-[60%] w-[95%]  shadow mx-auto mb-[3%] mt-[1%] rounded-md">
 	<!-- <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure> -->
-	<a href="/blog">
-	<div class="card-body bg-accent rounded-md">
+	<a href={url}>
+	<div class="card-body bg-primary rounded-md">
 	  <h2 class="card-title">
-		Post Title
+		{frontmatter.title}
 		<div class="badge badge-info">NEW</div>
 	  </h2>
-	  <p class="line-clamp-2">If a dog chews shoes whose shoes does he choose?
-		asdfasdfasdfafasdfa sdfasdfasasdfas dfasdfsdfasssssss sssssssssssssss sssssssdasdfasdfasdfasdfgasdgasdfgasdfgasdf
-		asdfasdfsafsdasddd ddafasdfasd fasdfasasdfasdfasdfsd fasssssssssssssssssssssssss ssssdasdfasdfasdfasdfgasdgasdfgasdfgasdf
+	  <p class="line-clamp-2 flex-wrap">{frontmatter.description}
 	  </p>
-	  <div class="card-actions justify-end">
+	  <div class="card-actions flex-wrap justify-end">
 		<div class="badge badge-outline bg-secondary">Fashion</div> 
 		<div class="badge badge-outline">Products</div>
 	  </div>

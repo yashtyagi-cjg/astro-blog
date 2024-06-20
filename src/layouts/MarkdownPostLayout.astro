@@ -1,0 +1,22 @@
+---
+const { frontmatter , headings} = Astro.props;
+import BaseLayout from "./Layout.astro";
+import TableOfContents from "./../components/TableOfContents.astro";
+
+// console.log(JSON.stringify(Astro.props))
+---
+
+<BaseLayout title={frontmatter.title}>
+    <div class="grid sm:grid-cols-5 mt-8">
+        <div class="col-span-1 sm:col-span-4">
+            <article class="p-4 prose prose-lg max-w-full mx-auto sm:max-w-[70%]">
+                <slot />
+            </article>
+        </div>
+        <div class="hidden sm:block col-span-1">
+            <!-- <TableOfContent client:load/> -->
+
+            <TableOfContents headings={headings} />
+        </div>
+    </div>
+</BaseLayout>

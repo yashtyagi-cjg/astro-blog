@@ -1,0 +1,153 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+type Props = {
+  headings: MarkdownHeading[];
+};
+
+type HeadingWithSubheadings = MarkdownHeading & {
+  subheadings: MarkdownHeading[];
+};
+
+const { headings } = Astro.props;
+
+const grouppedHeadings = headings.reduce((array, heading) => {
+  if (heading.depth === 2) {
+    array.push({ ...heading, subheadings: [] });
+  } else if (heading.depth === 3) {
+    array.at(-1)?.subheadings.push(heading);
+  }
+
+  return array;
+}, [] as HeadingWithSubheadings[]);
+---
+
+<nav id="table-of-contents" class="sticky top-20" aria-label="Table Of Contents">
+    <span class="text-2xl font-bold"> Contents </span>
+  <ol class="ml-4">
+    {
+        
+      grouppedHeadings.map((h) => (
+        <li>
+          <a class="hover:underline hover:decoration-blue-500 decoration-wavy" href={`#${h.slug}`}>{h.text}</a>
+          {h.subheadings.length > 0 && (
+            <ol class="ml-3">
+              {h.subheadings.map((sub) => (
+                <li>
+                  <a class="hover:underline hover:decoration-pink-500 decoration-wavy" href={`#${sub.slug}`}>{sub.text}</a>
+                </li>
+              ))}
+            </ol>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<!-- <script is:inline>
+  // This script tag is useful only if you want to display the TOC alongside the blog post...
+  // ... and highlight the section that the user is currently reading through.
+  // Feel free to remove this tag if you don't need this type of functionality.
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const headingFragment = `#${entry.target.id}`;
+        const tocItem = document.querySelector(`a[href="${headingFragment}"]`);
+
+        if (entry.isIntersecting) {
+          const previouslyActivatedItem =
+            document.querySelector('.active-toc-item');
+
+          previouslyActivatedItem?.classList.remove('active-toc-item');
+          tocItem.classList.add('active-toc-item');
+        } else {
+          const isAnyOtherEntryIntersecting = entries.some(
+            (e) => e.target.id !== entry.target.id && e.isIntersecting
+          );
+
+          if (isAnyOtherEntryIntersecting) {
+            tocItem.classList.remove('active-toc-item');
+          }
+        }
+      }
+    },
+    { root: null, rootMargin: '0px', threshold: [0.5] }
+  );
+
+  const sectionHeadings = document.querySelectorAll(
+    'article > h2, article > h3'
+  );
+
+  for (const heading of sectionHeadings) {
+    observer.observe(heading);
+  }
+
+
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      document.querySelector(this.getAttribute("href")).scrollIntoView({
+        behavior: "smooth",
+      });
+    });
+  });
+</script> -->
+
+
+<script is:inline>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let hasActiveItem = false;
+  
+        for (const entry of entries) {
+          const headingFragment = `#${entry.target.id}`;
+          const tocItem = document.querySelector(`a[href="${headingFragment}"]`);
+  
+          if (entry.isIntersecting) {
+            tocItem.classList.add('active-toc-item');
+            hasActiveItem = true;
+          } else {
+            tocItem.classList.remove('active-toc-item');
+          }
+        }
+  
+        // If no item is active, activate the first intersecting item
+        if (!hasActiveItem && entries.length > 0) {
+          const firstIntersecting = entries.find(e => e.isIntersecting);
+          if (firstIntersecting) {
+            const headingFragment = `#${firstIntersecting.target.id}`;
+            const tocItem = document.querySelector(`a[href="${headingFragment}"]`);
+            tocItem.classList.add('active-toc-item');
+          }
+        }
+      },
+      { root: null, rootMargin: '0px', threshold: 0.5 }
+    );
+  
+    const sectionHeadings = document.querySelectorAll('article > h2, article > h3');
+  
+    sectionHeadings.forEach((heading) => {
+      observer.observe(heading);
+    });
+  
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+  
+        document.querySelector(this.getAttribute("href")).scrollIntoView({
+          behavior: "smooth",
+        });
+      });
+    });
+  </script>
+  
+
+<style>
+.active-toc-item {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+</style> 
