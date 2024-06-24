@@ -1,5 +1,7 @@
 # Astro Blog
 
+![image](https://github.com/yashtyagi-cjg/astro-blog/assets/54401404/bbd59191-ac03-415a-8b56-f2e152fa08de)
+
 This repository hosts my blog writeups, which will be added soon.
 
 ## Getting Started
