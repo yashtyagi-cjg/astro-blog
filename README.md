@@ -1,15 +1,32 @@
+# Astro Blog
 
-## 🧞 Commands
+This repository hosts my blog writeups, which will be added soon.
 
-All commands are run from the root of the project, from a terminal:
+## Getting Started
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+To run this project locally, follow these steps:
 
+1. Clone the repository:
+```bash
+   git clone <repository-url>
+   cd <repository-folder>
+```
 
+2. Install dependencies
+
+```bash
+  npm install
+```
+
+3. Start the local development server
+```bash
+  npm run dev
+```
+
+This will start the server at http://localhost:4321
+
+## CI/CD Pipeline
+My CI/CD pipeline uses GitHub Actions to push updates to the registry. Deployment is managed by Watchtower, which automatically updates the running container when a new image is available.
+
+## Hosting
+For production deployment, choose a hosting provider from the many available options.
