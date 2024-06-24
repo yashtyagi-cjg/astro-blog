@@ -27,4 +27,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: vidyudabhi/self-blog:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/self-blog:latest, ${{ secrets.DOCKERHUB_USERNAME }}/self-blog:${{ github.sha }}
