@@ -27,6 +27,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            vidyudabhi/self-blog:latest
-            `vidyudabhi/self-blog:latest:${{ github.sha }}`
+          tags: vidyudabhi/self-blog:latest
